@@ -69,7 +69,7 @@ class Task1:
         for basket in baskets:
             for item in basket:
                 counts[item] += 1
-            for x, y in combinations(basket, 2):
+            for x, y in combinations(sorted(basket), 2):
                 h1 = hash(x + y) % Task1.BUCKET_COUNT
                 h2 = Task1.rkhash(x + y) % Task1.BUCKET_COUNT
                 buckets1[h1] += 1
@@ -82,7 +82,7 @@ class Task1:
         C2 = defaultdict(int)
 
         for basket in baskets:
-            for x, y in combinations(basket, 2):
+            for x, y in combinations(sorted(basket), 2):
                 h1 = hash(x + y) % Task1.BUCKET_COUNT
                 h2 = Task1.rkhash(x + y) % Task1.BUCKET_COUNT
                 if buckets1[h1] >= s and buckets2[h2] >= s:

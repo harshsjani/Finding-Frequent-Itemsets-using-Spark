@@ -69,7 +69,7 @@ class Task1:
         for basket in baskets:
             for item in basket:
                 counts[item] += 1
-            for x, y in combinations(basket, 2):
+            for x, y in combinations(sorted(basket), 2):
                 h1 = hash(x + y) % Task1.BUCKET_COUNT
                 h2 = Task1.rkhash(x + y) % Task1.BUCKET_COUNT
                 buckets1[h1] += 1
@@ -82,7 +82,7 @@ class Task1:
         C2 = defaultdict(int)
 
         for basket in baskets:
-            for x, y in combinations(basket, 2):
+            for x, y in combinations(sorted(basket), 2):
                 h1 = hash(x + y) % Task1.BUCKET_COUNT
                 h2 = Task1.rkhash(x + y) % Task1.BUCKET_COUNT
                 if buckets1[h1] >= s and buckets2[h2] >= s:
@@ -174,7 +174,7 @@ class Task1:
         
         rdd = self.sc.textFile(self.input_file)
         first = rdd.first()
-        rdd = rdd.filter(lambda x: x != first).map(lambda x: Task1.basket_fn(x)).groupByKey().filter(lambda x: len(x[1]) > filter_threshold).map(lambda x: set(x[1]))
+        rdd = rdd.filter(lambda x: x != first).map(lambda x: Task1.basket_fn(x)).groupByKey().map(lambda x: set(x[1])).filter(lambda x: len(x) > filter_threshold)
         total_items = rdd.count()
         
         candidates = rdd.mapPartitions(lambda chunk: Task1.multihash(list(chunk), support, total_items)).distinct().sortBy(lambda x: (len(x), x)).collect()
