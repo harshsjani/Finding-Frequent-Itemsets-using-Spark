@@ -2,3 +2,8 @@ review.json
 business.json
 .gitignore
 _DONOTSUBMIT_ref2t1.py
+.vscode/launch.json
+.vscode/settings.json
+outcsv.csv
+sandbox.ipynb
+__pycache__/task1.cpython-36.pyc
